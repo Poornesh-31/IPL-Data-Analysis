@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Data Analysis</title>
+</head>
+<body>
+    <h1>IPL Data Analysis</h1>
+
+    <h2>Match Outcome</h2>
+    <div>fytt7t7igggggiuutftfr776trt
+        {{ match_outcome_graph|safe }}
+    </div>
+
+    <h2>Top Venues with Most Matches</h2>
+    <div>
+        {{ venue_graph|safe }}
+    </div>
+
+    <h2>Player Performance</h2>
+    <div>
+        <h3>Top 10 Run Scorers</h3>
+        {{ batsman_graph|safe }}
+        
+        <h3>Top 10 Wicket-Takers</h3>
+        {{ bowler_graph|safe }}
+    </div>
+
+    <h2>Average Run Rate per Team</h2>
+    <div>
+        {{ run_rate_graph|safe }}
+    </div>
+
+    <h2>Win Percentage of Teams</h2>
+    <div>
+        {{ team_comparison_graph|safe }}
+    </div>
+
+    <h2>Top 10 Batting Partnerships</h2>
+    <div>
+        {{ batting_partnerships_graph|safe }}
+    </div>
+    <h2>Player Performance Predictions</h2>
+<p>Predictions: {{ player_performance_predictions }}</p> <!-- Debug line -->
+<ul>
+    {% if player_performance_predictions %}
+        {% for prediction in player_performance_predictions %}
+            <li>{{ prediction }}</li>
+        {% endfor %}
+    {% else %}
+        <li>No predictions available</li>
+    {% endif %}
+</ul>
+
+    
+    <h2>Sentiment Analysis</h2>
+    <p>
+        Sentiment for "IPL is amazing!": <strong>{{ sentiment['compound'] }}</strong>
+    </p>
+
+</body>
+</html>
