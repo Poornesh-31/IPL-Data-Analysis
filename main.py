@@ -7,7 +7,7 @@ import os
 matches_path = r'C:\Users\poorn\OneDrive\Desktop\IPL-INT\matches.csv'
 deliveries_path = r'C:\Users\poorn\OneDrive\Desktop\IPL-INT\deliveries.csv'
 
-# Check if files exist, otherwise exit
+# Check if files exist
 if not os.path.exists(matches_path) or not os.path.exists(deliveries_path):
     print(f"Error: One or both data files not found!\nMatches: {matches_path}\nDeliveries: {deliveries_path}")
     exit()
@@ -22,19 +22,21 @@ if 'date' in matches_df.columns:
 else:
     print("Warning: 'date' column missing in matches.csv!")
 
+# 1️⃣ Match Outcomes Over Different Years (Already Done)
 def match_outcome_analysis():
     """Visualizes match outcomes over different years."""
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(12, 6))
     sns.countplot(x=matches_df['season'], hue=matches_df['winner'], palette='coolwarm')
     plt.title("Match Outcomes Across Different Years")
     plt.xlabel("Season")
     plt.ylabel("Matches Won")
     plt.xticks(rotation=45)
-    plt.legend(title="Winning Team")
+    plt.legend(title="Winning Team", bbox_to_anchor=(1, 1))
     plt.show()
 
+# 2️⃣ Player Performance - Runs Distribution
 def player_performance(player_name):
-    """Analyzes and visualizes individual player performance."""
+    """Analyzes and visualizes an individual player's runs scored distribution."""
     if 'batter' not in deliveries_df.columns:
         print("Error: 'batter' column missing in deliveries dataset!")
         return
@@ -45,14 +47,15 @@ def player_performance(player_name):
         return
     
     plt.figure(figsize=(10, 5))
-    sns.histplot(player_data['batsman_runs'], bins=10, kde=True)
-    plt.title(f"Performance of {player_name}")
+    sns.histplot(player_data['batsman_runs'], bins=10, kde=True, color='blue')
+    plt.title(f"Performance of {player_name} - Runs Distribution")
     plt.xlabel("Runs Scored")
     plt.ylabel("Frequency")
     plt.show()
 
+# 3️⃣ Team Comparison - Total Matches Won
 def team_comparison():
-    """Compares team performances over the years."""
+    """Compares team performances in terms of total wins."""
     if 'winner' not in matches_df.columns:
         print("Error: 'winner' column missing in matches dataset!")
         return
@@ -66,6 +69,7 @@ def team_comparison():
     plt.xticks(rotation=45)
     plt.show()
 
+# 4️⃣ Venue Performance - Matches Won at Different Venues
 def venue_performance():
     """Evaluates match outcomes across different venues."""
     if 'venue' not in matches_df.columns or 'winner' not in matches_df.columns:
@@ -81,6 +85,7 @@ def venue_performance():
     plt.xticks(rotation=90)
     plt.show()
 
+# 5️⃣ Run Rate Analysis - Average Run Rates of Teams
 def run_rate_analysis():
     """Visualizes average run rates of different teams."""
     if 'over' not in deliveries_df.columns or 'total_runs' not in deliveries_df.columns:
@@ -97,6 +102,7 @@ def run_rate_analysis():
     plt.ylabel("Teams")
     plt.show()
 
+# 6️⃣ Best Batting Partnerships
 def best_batting_partnership():
     """Identifies top batting partnerships."""
     if 'batter' not in deliveries_df.columns or 'non_striker' not in deliveries_df.columns:
@@ -113,14 +119,14 @@ def best_batting_partnership():
     plt.ylabel("Partnerships")
     plt.show()
 
-# Print column names for debugging
+# Debugging - Print dataset columns
 print("Matches Dataset Columns:", matches_df.columns.tolist())
 print("Deliveries Dataset Columns:", deliveries_df.columns.tolist())
 
-# Example usage
-match_outcome_analysis()
-player_performance("Virat Kohli")
-team_comparison()
-venue_performance()
-run_rate_analysis()
-best_batting_partnership()
+# Run all visualizations
+match_outcome_analysis()  # ✅ Answer Q1
+player_performance("Virat Kohli")  # 📊 Answer Q2
+team_comparison()  # ⚔️ Answer Q3
+venue_performance()  # 🏟️ Answer Q4
+run_rate_analysis()  # 📈 Answer Q5
+best_batting_partnership()  # 🏏 Answer Q6
