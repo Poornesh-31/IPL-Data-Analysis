@@ -22,7 +22,7 @@ if 'date' in matches_df.columns:
 else:
     print("Warning: 'date' column missing in matches.csv!")
 
-# 1️⃣ Match Outcomes Over Different Years (Already Done)
+# 1️⃣ Match Outcomes Over Different Years
 def match_outcome_analysis():
     """Visualizes match outcomes over different years."""
     plt.figure(figsize=(12, 6))
@@ -105,27 +105,33 @@ def run_rate_analysis():
 # 6️⃣ Best Batting Partnerships
 def best_batting_partnership():
     """Identifies top batting partnerships."""
-    if 'batter' not in deliveries_df.columns or 'non_striker' not in deliveries_df.columns:
-        print("Error: Missing 'batter' or 'non_striker' columns in deliveries dataset!")
+    if 'batter' not in deliveries_df.columns or 'non_striker' not in deliveries_df.columns or 'total_runs' not in deliveries_df.columns:
+        print("Error: Missing 'batter', 'non_striker', or 'total_runs' columns in deliveries dataset!")
         return
 
     partnerships = deliveries_df.groupby(['batter', 'non_striker'])['total_runs'].sum().reset_index()
     top_partnerships = partnerships.sort_values(by='total_runs', ascending=False).head(10)
 
+    # Debugging: Print top partnerships
+    print("Top Partnerships Data:\n", top_partnerships)
+
+    top_partnerships['Partnership'] = top_partnerships['batter'].fillna('') + " & " + top_partnerships['non_striker'].fillna('')
+    
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=top_partnerships, x='total_runs', y=top_partnerships['batter'] + " & " + top_partnerships['non_striker'], palette='magma')
+    sns.barplot(data=top_partnerships, x='total_runs', y='Partnership', palette='magma')
     plt.title("Top 10 Batting Partnerships")
     plt.xlabel("Runs Scored")
     plt.ylabel("Partnerships")
+    plt.savefig("Figure_06.png")  # Save before plt.show()
     plt.show()
-
-# Debugging - Print dataset columns
-print("Matches Dataset Columns:", matches_df.columns.tolist())
-print("Deliveries Dataset Columns:", deliveries_df.columns.tolist())
 
 # Run all visualizations
 match_outcome_analysis()  # ✅ Answer Q1
-player_performance("Virat Kohli")  # 📊 Answer Q2
+
+# Ask user for player name and display their performance
+player_name = input("Enter the player's name to see their performance: ")
+player_performance(player_name)  # 📊 Answer Q2
+
 team_comparison()  # ⚔️ Answer Q3
 venue_performance()  # 🏟️ Answer Q4
 run_rate_analysis()  # 📈 Answer Q5
